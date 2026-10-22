@@ -22,6 +22,14 @@ revealTargets.forEach((el) => {
 function show(el) {
   el.classList.add('is-visible');
   if (el.classList.contains('stats')) animateCounters(el);
+  if (el.classList.contains('reveal')) {
+    // Une fois apparu, on retire l'animation d'entrée pour laisser place à l'effet 3D au survol
+    el.addEventListener('transitionend', function done(e) {
+      if (e.target !== el) return;
+      el.classList.remove('reveal', 'is-visible');
+      el.removeEventListener('transitionend', done);
+    });
+  }
 }
 
 if (reduceMotion || !canObserve) {
@@ -69,4 +77,62 @@ if (canObserve && navLinks.length) {
     });
   }, { rootMargin: '-45% 0px -50% 0px' });
   document.querySelectorAll('main section[id]').forEach((s) => navObserver.observe(s));
+}
+
+// --- Titre animé façon machine à écrire ---
+const typed = document.querySelector('.typed[data-typed]');
+if (typed && !reduceMotion) {
+  const words = JSON.parse(typed.dataset.typed);
+  // Les lecteurs d'écran lisent le texte complet, pas l'animation
+  const full = document.createElement('span');
+  full.className = 'sr-only';
+  full.textContent = typed.textContent;
+  typed.before(full);
+  typed.setAttribute('aria-hidden', 'true');
+  typed.classList.add('is-typing');
+  typed.textContent = '';
+
+  let word = 0, letter = 0, deleting = false;
+  (function step() {
+    const current = words[word];
+    letter += deleting ? -1 : 1;
+    typed.textContent = current.slice(0, letter);
+    let delay = deleting ? 28 : 55;
+    if (!deleting && letter === current.length) { deleting = true; delay = 1900; }
+    else if (deleting && letter === 0) { deleting = false; word = (word + 1) % words.length; delay = 350; }
+    setTimeout(step, delay);
+  })();
+}
+
+// --- Barre de progression de lecture ---
+const progress = document.querySelector('.scroll-progress');
+if (progress) {
+  let ticking = false;
+  const update = () => {
+    const max = document.documentElement.scrollHeight - window.innerHeight;
+    progress.style.transform = `scaleX(${max > 0 ? window.scrollY / max : 0})`;
+    ticking = false;
+  };
+  window.addEventListener('scroll', () => {
+    if (!ticking) { ticking = true; requestAnimationFrame(update); }
+  }, { passive: true });
+  update();
+}
+
+// --- Inclinaison 3D au survol (souris uniquement) ---
+if (!reduceMotion && window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+  document.querySelectorAll('[data-tilt]').forEach((el) => {
+    const max = Number(el.dataset.tilt) || 8;
+    el.classList.add('tilt');
+    el.addEventListener('pointermove', (e) => {
+      const r = el.getBoundingClientRect();
+      const x = (e.clientX - r.left) / r.width;
+      const y = (e.clientY - r.top) / r.height;
+      el.style.transform =
+        `perspective(900px) rotateX(${((0.5 - y) * max).toFixed(2)}deg) rotateY(${((x - 0.5) * max).toFixed(2)}deg)`;
+      el.style.setProperty('--glare-x', `${(x * 100).toFixed(1)}%`);
+      el.style.setProperty('--glare-y', `${(y * 100).toFixed(1)}%`);
+    });
+    el.addEventListener('pointerleave', () => { el.style.transform = ''; });
+  });
 }

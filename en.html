@@ -24,6 +24,7 @@
   <link rel="stylesheet" href="style.css">
   <script>document.documentElement.classList.add('js');</script>
   <script src="main.js" defer></script>
+  <script src="globe.js" defer></script>
 </head>
 <body>
 
@@ -42,6 +43,7 @@
       </nav>
       <a href="index.html" class="lang-switch" hreflang="fr" lang="fr" aria-label="Version française">FR</a>
     </div>
+    <div class="scroll-progress" aria-hidden="true"></div>
   </header>
 
   <main>
@@ -52,7 +54,7 @@
         <div class="hero-content">
           <p class="hero-tag">Available now for a V.I.E. assignment</p>
           <h1>Noa Hauquin</h1>
-          <p class="hero-title">International sales · Sales administration · B2B customer relations</p>
+          <p class="hero-title" data-full="International sales · Sales administration · B2B customer relations"><span class="typed" data-typed='["Export sales administration", "International sales assistant", "Import-export coordination", "B2B customer relations"]'>International sales · Sales administration · B2B customer relations</span></p>
           <p class="hero-text">
             After two years of work-study in sales at GRDF, France's leading gas
             distribution network, I prospect, build customer loyalty and follow every
@@ -70,8 +72,11 @@
             <a href="CV-Noa-Hauquin.pdf" class="btn btn-secondary" download>Download my CV (FR)</a>
           </div>
         </div>
-        <img class="hero-photo" src="img/photo-noa-hauquin.jpg" width="460" height="575"
-             alt="Portrait of Noa Hauquin in a suit">
+        <div class="hero-photo-wrap" data-tilt="10">
+          <img class="hero-photo" src="img/photo-noa-hauquin.jpg" width="460" height="575"
+               alt="Portrait of Noa Hauquin in a suit">
+          <span class="photo-badge" aria-hidden="true">FR · EN · ES</span>
+        </div>
       </div>
     </section>
 
@@ -116,22 +121,22 @@
         <h2 class="section-title">Skills</h2>
 
         <div class="cards">
-          <article class="card">
+          <article class="card" data-tilt="6">
             <svg class="card-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2z"/></svg>
             <h3>Prospecting &amp; negotiation</h3>
             <p>Phone prospecting, needs assessment, sales pitch and objection handling.</p>
           </article>
-          <article class="card">
+          <article class="card" data-tilt="6">
             <svg class="card-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.9"/><path d="M16 3.1a4 4 0 0 1 0 7.8"/></svg>
             <h3>B2B customer relations</h3>
             <p>Account portfolio management, follow-ups, customer retention and request handling.</p>
           </article>
-          <article class="card">
+          <article class="card" data-tilt="6">
             <svg class="card-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M16 13H8"/><path d="M16 17H8"/><path d="M10 9H8"/></svg>
             <h3>Sales administration</h3>
             <p>Quote preparation and follow-up, order tracking, customer data quality.</p>
           </article>
-          <article class="card">
+          <article class="card" data-tilt="6">
             <svg class="card-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8"/><path d="M12 17v4"/></svg>
             <h3>Tools &amp; digital</h3>
             <ul class="tags">
@@ -155,22 +160,22 @@
         </p>
 
         <ol class="steps">
-          <li class="step">
+          <li class="step" data-tilt="6">
             <span class="step-number" aria-hidden="true">1</span>
             <h3>Qualify</h3>
             <p>Every inbound lead is handled within 48 hours: I identify the need, the context and the right contact.</p>
           </li>
-          <li class="step">
+          <li class="step" data-tilt="6">
             <span class="step-number" aria-hidden="true">2</span>
             <h3>Quote</h3>
             <p>I prepare a clear, tailored quote, around 50 every month in SAP.</p>
           </li>
-          <li class="step">
+          <li class="step" data-tilt="6">
             <span class="step-number" aria-hidden="true">3</span>
             <h3>Follow up &amp; close</h3>
             <p>I track every quote through to a decision, following up at the right time.</p>
           </li>
-          <li class="step">
+          <li class="step" data-tilt="6">
             <span class="step-number" aria-hidden="true">4</span>
             <h3>Retain &amp; record</h3>
             <p>Every interaction is logged in the CRM to keep customer data reliable and prepare the next step.</p>
@@ -217,8 +222,7 @@
         </div>
 
         <div class="destinations">
-          <h3>Target destinations</h3>
-          <div class="map-wrap">
+          <div class="map-wrap" data-label="3D globe of target destinations from Paris: Canada, United States, Japan, South Korea and Singapore">
           <svg class="world-map" viewBox="0 0 1000 470" role="img" aria-labelledby="map-title-en map-desc-en">
             <title id="map-title-en">Map of target destinations</title>
             <desc id="map-desc-en">From France: Canada, United States, Japan, South Korea and Singapore.</desc>
@@ -248,13 +252,18 @@
             <text class="map-label" x="803.9" y="269.7" text-anchor="start">Singapore</text>
           </svg>
           </div>
-          <ul class="destination-list">
-            <li>Canada</li>
-            <li>United States</li>
-            <li>Japan</li>
-            <li>South Korea</li>
-            <li>Singapore</li>
-          </ul>
+          <div class="destinations-text">
+            <h3>Target destinations</h3>
+            <p>North America and Asia: where I would like to carry out my V.I.E.</p>
+            <ul class="destination-list">
+              <li><button type="button" data-lat="57" data-lon="-100">Canada</button></li>
+              <li><button type="button" data-lat="39" data-lon="-98">United States</button></li>
+              <li><button type="button" data-lat="35.7" data-lon="139.7">Japan</button></li>
+              <li><button type="button" data-lat="37.5" data-lon="127" data-side="left">South Korea</button></li>
+              <li><button type="button" data-lat="1.35" data-lon="103.8">Singapore</button></li>
+            </ul>
+            <p class="globe-hint">Drag the globe or tap a country to rotate it.</p>
+          </div>
         </div>
       </div>
     </section>
@@ -330,6 +339,11 @@
         <div class="hero-actions">
           <a href="mailto:noahauquin.pro@gmail.com?subject=V.I.E.%20%E2%80%94%20Noa%20Hauquin" class="btn btn-primary">Send me an e-mail</a>
           <a href="CV-Noa-Hauquin.pdf" class="btn btn-secondary" download>Download my CV (FR)</a>
+        </div>
+
+        <div class="contact-qr">
+          <img src="img/qr-site.svg" width="112" height="112" alt="QR code to the website noa7-65.github.io/Mon-site">
+          <p>Scan to open this site on your phone.</p>
         </div>
       </div>
     </section>
