@@ -1,0 +1,459 @@
+/* =========================================================
+   Variables : modifie ici les couleurs et espacements
+   ========================================================= */
+:root {
+  --color-bg: #fafaf8;
+  --color-bg-alt: #f0f2f5;
+  --color-text: #1c2430;
+  --color-muted: #5b6573;
+  --color-primary: #13294b;   /* bleu marine */
+  --color-accent: #0f8b8d;    /* turquoise */
+  --color-border: #dde1e7;
+  --color-white: #ffffff;
+
+  --radius: 10px;
+  --max-width: 1040px;
+  --header-height: 64px;
+  --font: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+/* =========================================================
+   Base
+   ========================================================= */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: var(--header-height); /* le titre de section n'est pas caché sous l'en-tête */
+}
+
+body {
+  margin: 0;
+  font-family: var(--font);
+  font-size: 1.0625rem; /* 17px */
+  line-height: 1.6;
+  color: var(--color-text);
+  background: var(--color-bg);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3 {
+  line-height: 1.2;
+  color: var(--color-primary);
+  margin: 0 0 0.5em;
+}
+
+p {
+  margin: 0 0 1em;
+}
+
+a {
+  color: var(--color-accent);
+}
+
+a:focus-visible,
+.btn:focus-visible {
+  outline: 3px solid var(--color-accent);
+  outline-offset: 3px;
+}
+
+.container {
+  width: 100%;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 1.25rem;
+}
+
+/* =========================================================
+   En-tête
+   ========================================================= */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: rgba(250, 250, 248, 0.92);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  min-height: var(--header-height);
+}
+
+.logo {
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: var(--color-primary);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.nav-list {
+  display: flex;
+  gap: 1.25rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  overflow-x: auto; /* sur très petit écran, le menu défile au lieu de casser */
+}
+
+.nav-list a {
+  color: var(--color-muted);
+  text-decoration: none;
+  font-size: 0.95rem;
+  white-space: nowrap;
+}
+
+.nav-list a:hover {
+  color: var(--color-primary);
+}
+
+/* Sur mobile : on garde le nom et on masque le menu (la page se lit en défilant) */
+@media (max-width: 560px) {
+  .nav-list {
+    display: none;
+  }
+}
+
+/* =========================================================
+   Accroche
+   ========================================================= */
+.hero {
+  padding: 4.5rem 0 4rem;
+  background:
+    radial-gradient(circle at 85% 20%, rgba(15, 139, 141, 0.10), transparent 45%),
+    var(--color-bg);
+}
+
+.hero-tag {
+  display: inline-block;
+  padding: 0.3rem 0.8rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-accent);
+  background: rgba(15, 139, 141, 0.1);
+  border-radius: 999px;
+}
+
+.hero h1 {
+  font-size: clamp(2.4rem, 8vw, 4rem);
+  letter-spacing: -0.02em;
+  margin-bottom: 0.2em;
+}
+
+.hero-title {
+  font-size: clamp(1.15rem, 3.5vw, 1.5rem);
+  color: var(--color-muted);
+  margin-bottom: 1.25rem;
+}
+
+.hero-text {
+  max-width: 62ch;
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1.75rem;
+}
+
+/* =========================================================
+   Boutons
+   ========================================================= */
+.btn {
+  display: inline-block;
+  padding: 0.8rem 1.4rem;
+  font-weight: 600;
+  font-size: 1rem;
+  text-decoration: none;
+  border-radius: var(--radius);
+  border: 2px solid var(--color-primary);
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.btn-primary {
+  background: var(--color-primary);
+  color: var(--color-white);
+}
+
+.btn-primary:hover {
+  background: #0c1b33;
+}
+
+.btn-secondary {
+  background: transparent;
+  color: var(--color-primary);
+}
+
+.btn-secondary:hover {
+  background: var(--color-primary);
+  color: var(--color-white);
+}
+
+/* =========================================================
+   Sections communes
+   ========================================================= */
+.section {
+  padding: 4rem 0;
+}
+
+.section-alt {
+  background: var(--color-bg-alt);
+}
+
+.section-title {
+  font-size: clamp(1.6rem, 5vw, 2.1rem);
+  margin-bottom: 2rem;
+}
+
+.section-title::after {
+  content: "";
+  display: block;
+  width: 48px;
+  height: 3px;
+  margin-top: 0.6rem;
+  background: var(--color-accent);
+  border-radius: 2px;
+}
+
+/* =========================================================
+   Parcours (frise)
+   ========================================================= */
+.timeline {
+  margin: 0;
+  padding: 0 0 0 1.5rem;
+  list-style: none;
+  border-left: 2px solid var(--color-border);
+}
+
+.timeline-item {
+  position: relative;
+  padding-bottom: 2.5rem;
+}
+
+.timeline-item:last-child {
+  padding-bottom: 0;
+}
+
+.timeline-item::before {
+  content: "";
+  position: absolute;
+  left: calc(-1.5rem - 7px);
+  top: 0.35rem;
+  width: 12px;
+  height: 12px;
+  background: var(--color-bg);
+  border: 2px solid var(--color-accent);
+  border-radius: 50%;
+}
+
+.timeline-date {
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--color-accent);
+  margin-bottom: 0.3rem;
+}
+
+.timeline-item h3 {
+  font-size: 1.2rem;
+  margin-bottom: 0.15em;
+}
+
+.timeline-place {
+  color: var(--color-muted);
+  font-size: 0.95rem;
+  margin-bottom: 0.75rem;
+}
+
+.timeline-list {
+  margin: 0;
+  padding-left: 1.2rem;
+}
+
+.timeline-list li {
+  margin-bottom: 0.3rem;
+}
+
+/* =========================================================
+   Compétences (cartes)
+   ========================================================= */
+.cards {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+.card {
+  padding: 1.5rem;
+  background: var(--color-white);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+}
+
+.card h3 {
+  font-size: 1.1rem;
+}
+
+.card p {
+  margin: 0;
+  color: var(--color-muted);
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.tags li {
+  padding: 0.25rem 0.75rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--color-primary);
+  background: var(--color-bg-alt);
+  border-radius: 999px;
+}
+
+@media (min-width: 700px) {
+  .cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1000px) {
+  .cards {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* =========================================================
+   Langues (barres de niveau)
+   ========================================================= */
+.languages {
+  display: grid;
+  gap: 1.5rem;
+  max-width: 640px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.language-head {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.25rem 1rem;
+  margin-bottom: 0.4rem;
+}
+
+.language-name {
+  font-weight: 600;
+}
+
+.language-level {
+  color: var(--color-muted);
+  font-size: 0.95rem;
+}
+
+.bar {
+  height: 8px;
+  background: var(--color-border);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.bar span {
+  display: block;
+  width: var(--level);
+  height: 100%;
+  background: linear-gradient(90deg, var(--color-primary), var(--color-accent));
+  border-radius: 999px;
+}
+
+/* =========================================================
+   Contact
+   ========================================================= */
+.contact-intro {
+  max-width: 60ch;
+  margin-bottom: 1.75rem;
+}
+
+.contact-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  margin: 0 0 2rem;
+  padding: 0;
+  list-style: none;
+}
+
+.contact-list li {
+  padding: 1rem 1.25rem;
+  background: var(--color-white);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  overflow-wrap: anywhere; /* les longues adresses ne débordent pas sur mobile */
+}
+
+.contact-label {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-muted);
+  margin-bottom: 0.2rem;
+}
+
+.contact-list a {
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.contact-list a:hover {
+  text-decoration: underline;
+}
+
+@media (min-width: 700px) {
+  .contact-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* =========================================================
+   Pied de page
+   ========================================================= */
+.site-footer {
+  padding: 1.5rem 0;
+  font-size: 0.9rem;
+  color: var(--color-muted);
+  text-align: center;
+  border-top: 1px solid var(--color-border);
+}
+
+.site-footer p {
+  margin: 0;
+}
+
+/* Respecte le réglage « réduire les animations » du système */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .btn {
+    transition: none;
+  }
+}
