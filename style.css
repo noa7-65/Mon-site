@@ -4,17 +4,41 @@
 :root {
   --color-bg: #fafaf8;
   --color-bg-alt: #f0f2f5;
+  --color-surface: #ffffff;       /* fond des cartes */
   --color-text: #1c2430;
   --color-muted: #5b6573;
-  --color-primary: #13294b;   /* bleu marine */
-  --color-accent: #0f8b8d;    /* turquoise */
+  --color-heading: #13294b;       /* titres */
+  --color-primary: #13294b;       /* bleu marine : boutons */
+  --color-primary-hover: #0c1b33;
+  --color-on-primary: #ffffff;    /* texte sur les boutons */
+  --color-accent: #0f8b8d;        /* turquoise */
+  --color-accent-soft: rgba(15, 139, 141, 0.1);
   --color-border: #dde1e7;
-  --color-white: #ffffff;
+  --color-header-bg: rgba(250, 250, 248, 0.92);
 
   --radius: 10px;
   --max-width: 1040px;
   --header-height: 64px;
   --font: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+/* Mode sombre : suit automatiquement le réglage de l'appareil */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-bg: #0f141b;
+    --color-bg-alt: #151c26;
+    --color-surface: #1a2330;
+    --color-text: #e3e8ef;
+    --color-muted: #9aa6b6;
+    --color-heading: #f1f4f8;
+    --color-primary: #e3e8ef;
+    --color-primary-hover: #ffffff;
+    --color-on-primary: #0f141b;
+    --color-accent: #3cc3c5;
+    --color-accent-soft: rgba(60, 195, 197, 0.14);
+    --color-border: #2a3443;
+    --color-header-bg: rgba(15, 20, 27, 0.9);
+  }
 }
 
 /* =========================================================
@@ -43,7 +67,7 @@ body {
 
 h1, h2, h3 {
   line-height: 1.2;
-  color: var(--color-primary);
+  color: var(--color-heading);
   margin: 0 0 0.5em;
 }
 
@@ -53,6 +77,11 @@ p {
 
 a {
   color: var(--color-accent);
+}
+
+img {
+  max-width: 100%;
+  height: auto;
 }
 
 a:focus-visible,
@@ -75,7 +104,7 @@ a:focus-visible,
   position: sticky;
   top: 0;
   z-index: 10;
-  background: rgba(250, 250, 248, 0.92);
+  background: var(--color-header-bg);
   backdrop-filter: blur(8px);
   border-bottom: 1px solid var(--color-border);
 }
@@ -83,15 +112,15 @@ a:focus-visible,
 .header-inner {
   display: flex;
   align-items: center;
-  justify-content: space-between;
   gap: 1rem;
   min-height: var(--header-height);
 }
 
 .logo {
+  margin-right: auto;
   font-weight: 700;
   font-size: 1.1rem;
-  color: var(--color-primary);
+  color: var(--color-heading);
   text-decoration: none;
   white-space: nowrap;
 }
@@ -102,7 +131,6 @@ a:focus-visible,
   margin: 0;
   padding: 0;
   list-style: none;
-  overflow-x: auto; /* sur très petit écran, le menu défile au lieu de casser */
 }
 
 .nav-list a {
@@ -113,11 +141,26 @@ a:focus-visible,
 }
 
 .nav-list a:hover {
-  color: var(--color-primary);
+  color: var(--color-heading);
 }
 
-/* Sur mobile : on garde le nom et on masque le menu (la page se lit en défilant) */
-@media (max-width: 560px) {
+.lang-switch {
+  padding: 0.3rem 0.65rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--color-heading);
+  text-decoration: none;
+  border: 1.5px solid var(--color-border);
+  border-radius: 6px;
+}
+
+.lang-switch:hover {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+}
+
+/* Sur mobile : on garde le nom et le choix de langue, le menu est masqué (la page se lit en défilant) */
+@media (max-width: 760px) {
   .nav-list {
     display: none;
   }
@@ -127,10 +170,43 @@ a:focus-visible,
    Accroche
    ========================================================= */
 .hero {
-  padding: 4.5rem 0 4rem;
+  padding: 3rem 0 4rem;
   background:
-    radial-gradient(circle at 85% 20%, rgba(15, 139, 141, 0.10), transparent 45%),
+    radial-gradient(circle at 85% 20%, var(--color-accent-soft), transparent 45%),
     var(--color-bg);
+}
+
+.hero-grid {
+  display: flex;
+  flex-direction: column-reverse; /* sur mobile, la photo passe au-dessus du texte */
+  gap: 1.75rem;
+}
+
+.hero-photo {
+  width: 150px;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  border-radius: 16px;
+  border: 1px solid var(--color-border);
+  box-shadow: 0 12px 30px -12px rgba(19, 41, 75, 0.35);
+}
+
+@media (min-width: 860px) {
+  .hero {
+    padding: 4.5rem 0;
+  }
+  .hero-grid {
+    flex-direction: row;
+    align-items: center;
+    gap: 3.5rem;
+  }
+  .hero-content {
+    flex: 1;
+  }
+  .hero-photo {
+    width: 300px;
+    flex-shrink: 0;
+  }
 }
 
 .hero-tag {
@@ -139,7 +215,7 @@ a:focus-visible,
   font-size: 0.85rem;
   font-weight: 600;
   color: var(--color-accent);
-  background: rgba(15, 139, 141, 0.1);
+  background: var(--color-accent-soft);
   border-radius: 999px;
 }
 
@@ -150,7 +226,7 @@ a:focus-visible,
 }
 
 .hero-title {
-  font-size: clamp(1.15rem, 3.5vw, 1.5rem);
+  font-size: clamp(1.1rem, 3.2vw, 1.4rem);
   color: var(--color-muted);
   margin-bottom: 1.25rem;
 }
@@ -171,7 +247,7 @@ a:focus-visible,
 
 .stats li {
   padding: 0.9rem 1rem;
-  background: var(--color-white);
+  background: var(--color-surface);
   border: 1px solid var(--color-border);
   border-radius: var(--radius);
 }
@@ -180,7 +256,7 @@ a:focus-visible,
   display: block;
   font-size: 1.5rem;
   line-height: 1.2;
-  color: var(--color-primary);
+  color: var(--color-heading);
 }
 
 .stats span {
@@ -217,11 +293,11 @@ a:focus-visible,
 
 .btn-primary {
   background: var(--color-primary);
-  color: var(--color-white);
+  color: var(--color-on-primary);
 }
 
 .btn-primary:hover {
-  background: #0c1b33;
+  background: var(--color-primary-hover);
 }
 
 .btn-secondary {
@@ -231,7 +307,7 @@ a:focus-visible,
 
 .btn-secondary:hover {
   background: var(--color-primary);
-  color: var(--color-white);
+  color: var(--color-on-primary);
 }
 
 /* =========================================================
@@ -258,6 +334,18 @@ a:focus-visible,
   margin-top: 0.6rem;
   background: var(--color-accent);
   border-radius: 2px;
+}
+
+/* Deux colonnes sur grand écran (langues / centres d'intérêt) */
+.two-cols {
+  display: grid;
+  gap: 3rem;
+}
+
+@media (min-width: 860px) {
+  .two-cols {
+    grid-template-columns: 1fr 1fr;
+  }
 }
 
 /* =========================================================
@@ -330,7 +418,7 @@ a:focus-visible,
 
 .card {
   padding: 1.5rem;
-  background: var(--color-white);
+  background: var(--color-surface);
   border: 1px solid var(--color-border);
   border-radius: var(--radius);
 }
@@ -357,7 +445,7 @@ a:focus-visible,
   padding: 0.25rem 0.75rem;
   font-size: 0.9rem;
   font-weight: 600;
-  color: var(--color-primary);
+  color: var(--color-heading);
   background: var(--color-bg-alt);
   border-radius: 6px;
 }
@@ -372,6 +460,68 @@ a:focus-visible,
   .cards {
     grid-template-columns: repeat(4, 1fr);
   }
+}
+
+/* =========================================================
+   Projet V.I.E.
+   ========================================================= */
+.project-intro {
+  max-width: 65ch;
+  color: var(--color-muted);
+  margin-bottom: 2rem;
+}
+
+.project-grid {
+  display: grid;
+  gap: 2rem;
+}
+
+.project-grid h3 {
+  font-size: 1.15rem;
+  margin-bottom: 1rem;
+}
+
+@media (min-width: 760px) {
+  .project-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+  }
+}
+
+.check-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.check-list li {
+  position: relative;
+  padding-left: 1.9rem;
+  margin-bottom: 0.7rem;
+}
+
+.check-list li::before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  top: 0.1rem;
+  width: 1.3rem;
+  height: 1.3rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  line-height: 1.3rem;
+  text-align: center;
+  color: var(--color-accent);
+  background: var(--color-accent-soft);
+  border-radius: 50%;
+}
+
+.project-note {
+  margin-top: 1.25rem;
+  padding-left: 1rem;
+  font-style: italic;
+  color: var(--color-muted);
+  border-left: 3px solid var(--color-accent);
 }
 
 /* =========================================================
@@ -414,8 +564,31 @@ a:focus-visible,
   display: block;
   width: var(--level);
   height: 100%;
-  background: linear-gradient(90deg, var(--color-primary), var(--color-accent));
+  background: linear-gradient(90deg, #13294b, var(--color-accent));
   border-radius: 999px;
+}
+
+/* =========================================================
+   Centres d'intérêt
+   ========================================================= */
+.interests {
+  display: grid;
+  gap: 0.75rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.interests li {
+  padding: 0.9rem 1.1rem;
+  color: var(--color-muted);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+}
+
+.interests strong {
+  color: var(--color-text);
 }
 
 /* =========================================================
@@ -430,14 +603,14 @@ a:focus-visible,
   display: grid;
   grid-template-columns: 1fr;
   gap: 1rem;
-  margin: 0 0 2rem;
+  margin: 0;
   padding: 0;
   list-style: none;
 }
 
 .contact-list li {
   padding: 1rem 1.25rem;
-  background: var(--color-white);
+  background: var(--color-surface);
   border: 1px solid var(--color-border);
   border-radius: var(--radius);
   overflow-wrap: anywhere; /* les longues adresses ne débordent pas sur mobile */
@@ -490,5 +663,96 @@ a:focus-visible,
   }
   .btn {
     transition: none;
+  }
+}
+
+/* =========================================================
+   Impression / enregistrement en PDF : rendu façon CV
+   ========================================================= */
+@media print {
+  :root {
+    --color-bg: #ffffff;
+    --color-bg-alt: #ffffff;
+    --color-surface: #ffffff;
+    --color-text: #1c2430;
+    --color-muted: #4a5462;
+    --color-heading: #13294b;
+    --color-accent: #0f8b8d;
+    --color-accent-soft: rgba(15, 139, 141, 0.1);
+    --color-border: #dde1e7;
+  }
+
+  @page {
+    margin: 1.5cm;
+  }
+
+  body {
+    font-size: 10.5pt;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .site-header,
+  .site-footer,
+  .hero-actions,
+  .hero-tag {
+    display: none;
+  }
+
+  .hero,
+  .section {
+    padding: 0 0 1.2rem;
+    background: none;
+  }
+
+  .hero-grid {
+    flex-direction: row;
+    align-items: center;
+    gap: 1.5rem;
+  }
+
+  .hero-content {
+    flex: 1;
+  }
+
+  .hero-photo {
+    width: 110px;
+    box-shadow: none;
+  }
+
+  .hero h1 {
+    font-size: 26pt;
+  }
+
+  .stats {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .section-title {
+    font-size: 15pt;
+    margin-bottom: 0.8rem;
+  }
+
+  .cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .two-cols,
+  .project-grid,
+  .contact-list {
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+  }
+
+  .card,
+  .stats li,
+  .timeline-item,
+  .contact-list li,
+  .interests li {
+    break-inside: avoid;
+  }
+
+  .section-title {
+    break-after: avoid;
   }
 }

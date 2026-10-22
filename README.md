@@ -1,17 +1,26 @@
 # Site vitrine — Noa Hauquin
 
-Site d'une page en HTML/CSS simple (aucun framework, aucun JavaScript).
+Site d'une page en HTML/CSS simple (aucun framework, aucun JavaScript), en français et en anglais.
 
-- `index.html` : le contenu
-- `style.css` : la mise en forme (couleurs modifiables en haut du fichier, dans `:root`)
+| Fichier | Rôle |
+| --- | --- |
+| `index.html` | Version française |
+| `en.html` | Version anglaise (même structure, à garder synchronisée) |
+| `style.css` | Mise en forme, mode sombre et version imprimable |
+| `img/` | Photo, icône d'onglet, image d'aperçu de partage |
+| `CV-Noa-Hauquin.pdf` | CV téléchargeable |
 
 ## Voir le site
 
 Double-clique sur `index.html` : il s'ouvre dans ton navigateur.
 
-## Ajouts possibles
+## Modifier
 
-- **LinkedIn** : ajoute une carte dans la section Contact (`<ul class="contact-list">`)
-  en copiant le modèle d'une carte existante.
-- **CV en PDF** : dépose le fichier dans ce dossier, puis ajoute dans la section Contact
-  `<a href="CV-Noa-Hauquin.pdf" class="btn btn-secondary" download>Télécharger mon CV</a>`.
+- **Couleurs** : en haut de `style.css`, dans `:root` (et juste en dessous pour le mode sombre).
+- **Un texte** : modifie-le dans `index.html` **et** dans `en.html`.
+- **Le CV** : remplace `CV-Noa-Hauquin.pdf` par la nouvelle version, sous le même nom.
+
+## Mise en ligne
+
+Les aperçus de partage (LinkedIn, WhatsApp…) pointent vers `https://noa7-65.github.io/Mon-site/`,
+l'adresse du site une fois GitHub Pages activé sur la branche `main`.
