@@ -9,17 +9,9 @@ Site d'une page en HTML/CSS simple (aucun framework, aucun JavaScript).
 
 Double-clique sur `index.html` : il s'ouvre dans ton navigateur.
 
-## À remplir
+## Ajouts possibles
 
-Chaque champ est signalé dans `index.html` par un commentaire `<!-- À REMPLIR -->`
-et un texte entre crochets `[...]`.
-
-- [ ] Années de l'alternance GRDF (`[20XX] – [20XX]`)
-- [ ] Années du BTS NDRC + nom et ville de l'établissement
-- [ ] E-mail : l'adresse apparaît **deux fois** (dans `href="mailto:..."` et dans le texte affiché)
-- [ ] Téléphone : format international sans espaces dans `href="tel:..."`, format lisible dans le texte
-- [ ] Lien LinkedIn (dans `href` et dans le texte)
-- [ ] Ville
-- [ ] CV en PDF : dépose-le dans ce dossier sous le nom `cv-noa-hauquin.pdf`
-
-Pour vérifier qu'il ne reste rien : cherche `[` ou `À REMPLIR` dans `index.html`.
+- **LinkedIn** : ajoute une carte dans la section Contact (`<ul class="contact-list">`)
+  en copiant le modèle d'une carte existante.
+- **CV en PDF** : dépose le fichier dans ce dossier, puis ajoute dans la section Contact
+  `<a href="CV-Noa-Hauquin.pdf" class="btn btn-secondary" download>Télécharger mon CV</a>`.
