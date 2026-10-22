@@ -16,7 +16,11 @@
   --color-border: #dde1e7;
   --color-header-bg: rgba(250, 250, 248, 0.92);
   --color-map-dot: #cfd6e0;
+  --color-globe-dot: #8796ab;
   --shadow-hover: 0 14px 28px -16px rgba(19, 41, 75, 0.35);
+  --aurora-1: rgba(15, 139, 141, 0.2);    /* halos animés de l'accroche */
+  --aurora-2: rgba(19, 41, 75, 0.07);
+  --glare: rgba(15, 139, 141, 0.12);      /* reflet qui suit la souris */
 
   --radius: 10px;
   --max-width: 1040px;
@@ -41,7 +45,11 @@
     --color-border: #2a3443;
     --color-header-bg: rgba(15, 20, 27, 0.9);
     --color-map-dot: #2b3646;
+    --color-globe-dot: #66778f;
     --shadow-hover: 0 14px 28px -16px rgba(0, 0, 0, 0.7);
+    --aurora-1: rgba(60, 195, 197, 0.16);
+    --aurora-2: rgba(90, 130, 220, 0.16);
+    --glare: rgba(255, 255, 255, 0.08);
   }
 }
 
@@ -180,10 +188,37 @@ a:focus-visible,
    Accroche
    ========================================================= */
 .hero {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
   padding: 3rem 0 4rem;
-  background:
-    radial-gradient(circle at 85% 20%, var(--color-accent-soft), transparent 45%),
-    var(--color-bg);
+  background: var(--color-bg);
+}
+
+/* Halos de couleur en fond (animés plus bas, façon aurore) */
+.hero::before,
+.hero::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.hero::before {
+  width: 46rem;
+  height: 46rem;
+  top: -20rem;
+  right: -14rem;
+  background: radial-gradient(circle, var(--aurora-1), transparent 65%);
+}
+
+.hero::after {
+  width: 40rem;
+  height: 40rem;
+  bottom: -22rem;
+  left: -16rem;
+  background: radial-gradient(circle, var(--aurora-2), transparent 65%);
 }
 
 .hero-grid {
@@ -192,13 +227,40 @@ a:focus-visible,
   gap: 1.75rem;
 }
 
-.hero-photo {
+.hero-photo-wrap {
+  position: relative;
   width: 150px;
+  flex-shrink: 0;
+  border-radius: 16px;
+  transform-style: preserve-3d;
+  --glare: rgba(255, 255, 255, 0.3);
+}
+
+.hero-photo {
+  display: block;
+  width: 100%;
   aspect-ratio: 4 / 5;
   object-fit: cover;
   border-radius: 16px;
   border: 1px solid var(--color-border);
   box-shadow: 0 12px 30px -12px rgba(19, 41, 75, 0.35);
+}
+
+/* Étiquette qui « flotte » devant la photo quand elle s'incline */
+.photo-badge {
+  display: none;
+  position: absolute;
+  left: -1.1rem;
+  bottom: 1.6rem;
+  padding: 0.45rem 0.9rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--color-on-primary);
+  background: var(--color-primary);
+  border-radius: 999px;
+  box-shadow: 0 10px 24px -10px rgba(19, 41, 75, 0.6);
+  transform: translateZ(45px);
 }
 
 @media (min-width: 860px) {
@@ -213,10 +275,62 @@ a:focus-visible,
   .hero-content {
     flex: 1;
   }
-  .hero-photo {
+  .hero-photo-wrap {
     width: 300px;
-    flex-shrink: 0;
   }
+  .photo-badge {
+    display: block;
+  }
+}
+
+/* Titre animé (machine à écrire, géré par main.js) */
+.typed.is-typing::after {
+  content: "";
+  display: inline-block;
+  width: 2px;
+  height: 1.05em;
+  margin-left: 3px;
+  vertical-align: -0.15em;
+  background: var(--color-accent);
+  animation: blink 1s steps(1) infinite;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+.hero-title {
+  min-height: 1.2em; /* évite que la page saute pendant l'animation */
+}
+
+@media (max-width: 480px) {
+  .hero-title {
+    min-height: 2.4em;
+  }
+}
+
+/* Texte lu par les lecteurs d'écran mais invisible */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* Barre de progression de lecture, sous l'en-tête */
+.scroll-progress {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 2px;
+  background: var(--color-accent);
+  transform: scaleX(0);
+  transform-origin: 0 50%;
 }
 
 .hero-tag {
@@ -628,9 +742,57 @@ a:focus-visible,
   border-left: 3px solid var(--color-accent);
 }
 
-/* Destinations et carte du monde */
+/* Destinations : globe 3D (globe.js) ou, à défaut, carte plate */
 .destinations {
+  display: grid;
+  gap: 1.5rem;
+  align-items: center;
   margin-top: 3rem;
+}
+
+@media (min-width: 860px) {
+  .destinations {
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+    gap: 3rem;
+  }
+}
+
+.destinations-text p {
+  color: var(--color-muted);
+}
+
+.map-wrap.has-globe {
+  padding: 0;
+  background: none;
+  border: 0;
+}
+
+.map-wrap.has-globe .world-map {
+  display: none;
+}
+
+.globe {
+  display: block;
+  width: 100%;
+  max-width: 520px;
+  aspect-ratio: 1;
+  margin: 0 auto;
+  cursor: grab;
+  touch-action: pan-y; /* sur mobile, on fait tourner à l'horizontale et la page défile à la verticale */
+}
+
+.globe:active {
+  cursor: grabbing;
+}
+
+.globe-hint {
+  display: none;
+  margin: 1rem 0 0;
+  font-size: 0.9rem;
+}
+
+.map-wrap.has-globe ~ .destinations-text .globe-hint {
+  display: block;
 }
 
 .destinations h3 {
@@ -716,25 +878,44 @@ a:focus-visible,
   list-style: none;
 }
 
-.destination-list li {
+.destination-list button {
   display: inline-flex;
   align-items: center;
   gap: 0.45rem;
   padding: 0.35rem 0.85rem;
+  font: inherit;
   font-size: 0.95rem;
   font-weight: 600;
   color: var(--color-heading);
   background: var(--color-surface);
   border: 1px solid var(--color-border);
   border-radius: 999px;
+  cursor: pointer;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
 }
 
-.destination-list li::before {
+.destination-list button::before {
   content: "";
   width: 8px;
   height: 8px;
   background: var(--color-accent);
   border-radius: 50%;
+}
+
+.destination-list button:hover,
+.destination-list button[aria-pressed="true"] {
+  border-color: var(--color-accent);
+  background: var(--color-accent-soft);
+}
+
+.destination-list button:focus-visible {
+  outline: 3px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+/* Sans le globe, la liste n'est qu'une légende */
+.map-wrap:not(.has-globe) ~ .destinations-text .destination-list button {
+  cursor: default;
 }
 
 /* =========================================================
@@ -869,9 +1050,63 @@ a:focus-visible,
   margin: 0;
 }
 
+/* QR code vers le site (utile sur ordinateur et à l'impression) */
+.contact-qr {
+  display: none;
+  align-items: center;
+  gap: 1rem;
+  max-width: 400px;
+  margin-top: 2rem;
+  padding: 0.9rem 1rem;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+}
+
+.contact-qr img {
+  width: 96px;
+  height: 96px;
+  padding: 4px;
+  background: #ffffff;
+  border-radius: 6px;
+}
+
+.contact-qr p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--color-muted);
+}
+
+@media (min-width: 860px) {
+  .contact-qr {
+    display: flex;
+  }
+}
+
 /* =========================================================
    Effets : survol, apparitions, animations
    ========================================================= */
+
+/* Inclinaison 3D et reflet (classe .tilt ajoutée par main.js, souris uniquement) */
+.tilt {
+  position: relative;
+  transition: transform 0.2s ease-out, translate 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.tilt::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: radial-gradient(circle at var(--glare-x, 50%) var(--glare-y, 50%), var(--glare), transparent 60%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.tilt:hover::after {
+  opacity: 1;
+}
 
 /* Survol des cartes (uniquement avec une souris) */
 .card,
@@ -897,17 +1132,69 @@ a:focus-visible,
 /* Toutes les animations ne s'appliquent que si le visiteur ne les a pas désactivées */
 @media (prefers-reduced-motion: no-preference) {
 
-  /* Entrée de l'accroche au chargement */
+  /* Entrée de l'accroche au chargement
+     (« backwards » : l'animation ne bloque pas l'inclinaison 3D une fois terminée) */
   .hero-content > *,
-  .hero-photo {
-    animation: rise 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  .hero-photo-wrap {
+    animation: rise 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) backwards;
   }
   .hero-content > :nth-child(2) { animation-delay: 0.06s; }
   .hero-content > :nth-child(3) { animation-delay: 0.12s; }
   .hero-content > :nth-child(4) { animation-delay: 0.18s; }
   .hero-content > :nth-child(5) { animation-delay: 0.24s; }
   .hero-content > :nth-child(6) { animation-delay: 0.30s; }
-  .hero-photo { animation-delay: 0.15s; }
+  .hero-photo-wrap { animation-delay: 0.15s; }
+
+  /* Halos qui dérivent lentement derrière l'accroche */
+  .hero::before {
+    animation: drift-a 18s ease-in-out infinite alternate;
+  }
+  .hero::after {
+    animation: drift-b 22s ease-in-out infinite alternate;
+  }
+
+  @keyframes drift-a {
+    to {
+      transform: translate(-7rem, 5rem) scale(1.15);
+    }
+  }
+
+  @keyframes drift-b {
+    to {
+      transform: translate(9rem, -4rem) scale(1.2);
+    }
+  }
+
+  /* Fondu entre la version française et la version anglaise */
+  @view-transition {
+    navigation: auto;
+  }
+
+  .site-header {
+    view-transition-name: site-header;
+  }
+
+  ::view-transition-old(root) {
+    animation: vt-out 0.22s ease both;
+  }
+
+  ::view-transition-new(root) {
+    animation: vt-in 0.35s ease both;
+  }
+
+  @keyframes vt-out {
+    to {
+      opacity: 0;
+      transform: translateY(-8px);
+    }
+  }
+
+  @keyframes vt-in {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+  }
 
   @keyframes rise {
     from {
@@ -980,7 +1267,8 @@ a:focus-visible,
   .step,
   .stats li,
   .interests li,
-  .contact-list li {
+  .contact-list li,
+  .tilt {
     transition: none;
   }
 }
@@ -1034,9 +1322,68 @@ a:focus-visible,
     flex: 1;
   }
 
-  .hero-photo {
+  .hero-photo-wrap {
     width: 110px;
+  }
+
+  .hero-photo {
     box-shadow: none;
+  }
+
+  .hero::before,
+  .hero::after,
+  .scroll-progress,
+  .photo-badge,
+  .globe,
+  .globe-hint {
+    display: none !important;
+  }
+
+  /* Le titre animé s'imprime en entier */
+  .js .hero-title .typed {
+    display: none;
+  }
+
+  .js .hero-title::before {
+    content: attr(data-full);
+  }
+
+  /* À l'impression, la carte plate remplace le globe */
+  .map-wrap.has-globe {
+    padding: 0.5rem;
+    border: 1px solid var(--color-border);
+  }
+
+  .map-wrap.has-globe .world-map {
+    display: block;
+  }
+
+  .contact-qr {
+    display: flex;
+    margin-top: 1rem;
+  }
+
+  /* Blocs plus compacts pour tenir sur moins de pages */
+  .card,
+  .step {
+    padding: 0.8rem 1rem;
+  }
+
+  .card-icon {
+    width: 32px;
+    height: 32px;
+    padding: 6px;
+    margin-bottom: 0.5rem;
+  }
+
+  .step-number {
+    width: 1.8rem;
+    height: 1.8rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .destinations {
+    margin-top: 1rem;
   }
 
   .hero h1 {
